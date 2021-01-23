@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM Search</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+
+      td {
+        border: 1px solid black;
+        padding: 3px 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>사용자:</div>
+    <ul>
+      <li>John</li>
+      <li>Pete</li>
+    </ul>
+    <table>
+      <tr>
+        <td>1:1</td>
+        <td>2:1</td>
+        <td>3:1</td>
+        <td>4:1</td>
+        <td>5:1</td>
+      </tr>
+      <tr>
+        <td>1:2</td>
+        <td>2:2</td>
+        <td>3:2</td>
+        <td>4:2</td>
+        <td>5:2</td>
+      </tr>
+      <tr>
+        <td>1:3</td>
+        <td>2:3</td>
+        <td>3:3</td>
+        <td>4:3</td>
+        <td>5:3</td>
+      </tr>
+      <tr>
+        <td>1:4</td>
+        <td>2:4</td>
+        <td>3:4</td>
+        <td>4:4</td>
+        <td>5:4</td>
+      </tr>
+      <tr>
+        <td>1:5</td>
+        <td>2:5</td>
+        <td>3:5</td>
+        <td>4:5</td>
+        <td>5:5</td>
+      </tr>
+    </table>
+    <script>
+      // 최상단 DOM 노드 => <html>
+      const html = document.documentElement;
+      console.log(html);
+
+      // <body>
+      const body = document.body;
+      console.log(body);
+
+      // <head>
+      const head = document.head;
+      console.log(head);
+
+      // 각각의 DOM 노드에 접근할 방법을 생각해보자.
+      // <div> DOM 노드
+      const div = document.body.firstElementChild;
+      const ul = div.nextElementSibling;
+      const li = ul.lastElementChild;
+      console.log(div);
+      console.log(ul);
+      console.log(li);
+
+      // 임의의 요소 `elem`에서 lastChild.nextSibling은 항상 null이다.
+      console.log(div.lastChild.nextSibling === null);
+
+      // elem.children[0].previousSibling은 항상 null이 아닐 수 있다.
+      //이는 **요소 노드** 중 첫 번째라는 소리이므로, 텍스트 노드 등 다른 노드가 있을 수 있기 때문.
+      // 실제로 아래에는 텍스트 노드가 담긴다.
+      const fisrtChild = ul.children[0].previousSibling;
+      console.log(fisrtChild);
+
+      // 대각선 방향 칸으로 테이블 색칠하기
+      const table = body.lastElementChild.previousElementSibling;
+      for (let i = 0; i < table.rows.length; i++) {
+        table.rows[i].cells[i].style.backgroundColor = 'red';
+      }
+    </script>
+  </body>
+</html>
