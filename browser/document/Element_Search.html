@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elment Search</title>
+  </head>
+  <body>
+    <div>
+      <table id="age-table">
+        <tr>
+          <th><label>허허</label>이름</th>
+          <th>나이</th>
+        </tr>
+        <tr>
+          <td>철수</td>
+          <td>10살<label>허허</label></td>
+        </tr>
+        <tr>
+          <td><label>허허</label>영희</td>
+          <td>12살</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <form name="search">
+        <input type="email" />
+        <input type="button" />
+      </form>
+    </div>
+    <script>
+      // id='age-table'인 테이블
+      const table = document.querySelector('#age-table');
+      console.log(table);
+
+      // 테이블 내의 모든 'label'
+      const labels = table.querySelectorAll('label');
+      console.log(labels);
+
+      // 테이블 내 첫 번째 'td'
+      const firstTd = table.querySelector('td');
+      console.log(firstTd);
+
+      // name='search'인 form
+      const form = document.querySelector('form[name="search"]');
+      console.log(form);
+
+      // form의 첫번쨰 input
+      const firstInput = form.querySelector('input');
+      console.log(firstInput);
+
+      // form의 마지막 input
+      const inputs = form.querySelectorAll('input');
+      const lastInput = inputs[inputs.length - 1];
+      console.log(lastInput);
+    </script>
+  </body>
+</html>
