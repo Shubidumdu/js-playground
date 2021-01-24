@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Size And Scroll</title>
+    <style>
+      .scrollable {
+        width: 12rem;
+        height: 12rem;
+        overflow: scroll;
+      }
+
+      #field {
+        width: 200px;
+        border: 10px groove black;
+        background-color: #00ff00;
+        position: relative;
+      }
+
+      #ball {
+        position: absolute;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="scrollable">
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+      스크롤<br />
+    </div>
+    <div id="field">
+      <img
+        width="50px"
+        height="50px"
+        src="https://en.js.cx/clipart/ball.svg"
+        id="ball"
+      />
+      . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . . . . . . . . . . . . .
+    </div>
+    <script>
+      const scrollBox = document.querySelector('.scrollable');
+      // 아래는 요소 하단에서부터 스크롤 끝까지의 높이를 의미한다.
+      console.log(
+        scrollBox.scrollHeight - scrollBox.scrollTop - scrollBox.clientHeight,
+      );
+
+      // 아래는 '스크롤 바'의 넓이를 구할 수 있게 해준다.
+      console.log(scrollBox.offsetWidth - scrollBox.clientWidth);
+
+      // 축구공을 가운데 위치 시키기
+      const field = document.querySelector('#field');
+      const ball = document.querySelector('#ball');
+      const x = field.clientWidth / 2 - ball.clientWidth / 2;
+      const y = field.clientHeight / 2 - ball.clientHeight / 2;
+      ball.style.left = x + 'px';
+      ball.style.top = y + 'px';
+    </script>
+  </body>
+</html>
