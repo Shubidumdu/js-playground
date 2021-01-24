@@ -34,7 +34,7 @@
       스크롤<br />
       스크롤<br />
       스크롤<br />
-      스크롤<br />
+      <a style="color: red">스크롤</a><br />
       스크롤<br />
       스크롤<br />
       스크롤<br />
@@ -42,6 +42,9 @@
       스크롤<br />
       스크롤<br />
     </div>
+    <button id="top" onclick="onTop()">to the Top!</button>
+    <button id="scroll" onclick="onScroll()">let's scroll!</button>
+    <button id="red" onclick="onGoRed()">Go to Red!</button>
     <div id="field">
       <img
         width="50px"
@@ -72,6 +75,20 @@
       const y = field.clientHeight / 2 - ball.clientHeight / 2;
       ball.style.left = x + 'px';
       ball.style.top = y + 'px';
+
+      // 스크롤 조작
+      const onTop = () => {
+        scrollBox.scrollTo(0, 0);
+      };
+      const onScroll = () => {
+        scrollBox.scrollBy(0, 20);
+      };
+      const onGoRed = () => {
+        const red = scrollBox.querySelector('a');
+        // parameter로 true를 넘기면 해당 요소가 최상단에 보이고,
+        // false로 두면 최하단에 놓여진다.
+        red.scrollIntoView(true);
+      };
     </script>
   </body>
 </html>
