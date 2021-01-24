@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modifying Document</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+
+      td,
+      th {
+        border: 1px solid black;
+        padding: 3px;
+        text-align: center;
+      }
+
+      th {
+        font-weight: bold;
+        background-color: #e6e6e6;
+      }
+    </style>
+  </head>
+  <body>
+    <div>첫번째</div>
+    <ol id="elem">
+      <li>Hello</li>
+      <li>World</li>
+    </ol>
+
+    <div>받은 입력</div>
+    <ul></ul>
+
+    <div id="tree-container"></div>
+
+    <ul id="animals">
+      <li>
+        Animals
+        <ul>
+          <li>
+            Mammals
+            <ul>
+              <li>Cows</li>
+              <li>Donkeys</li>
+              <li>Dogs</li>
+              <li>Tigers</li>
+            </ul>
+          </li>
+          <li>
+            Other
+            <ul>
+              <li>Snakes</li>
+              <li>Birds</li>
+              <li>Lizards</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        Fishes
+        <ul>
+          <li>
+            Aquarium
+            <ul>
+              <li>Guppy</li>
+              <li>Angelfish</li>
+            </ul>
+          </li>
+          <li>
+            Sea
+            <ul>
+              <li>Sea trout</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <table id="calender"></table>
+    <div id="clock">
+      <span id="hour"></span>:<span id="minute"></span>:<span
+        id="second"
+      ></span>
+      <button id="clock-start" onclick="clockStart()">start</button>
+      <button id="clock-stop" onclick="clockStop()">stop</button>
+    </div>
+    <ul id="ul">
+      <li id="one">1</li>
+      <li id="two">4</li>
+    </ul>
+
+    <table id="sort">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Surname</th>
+          <th>Age</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>John</td>
+          <td>Smith</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>Pete</td>
+          <td>Brown</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>Ann</td>
+          <td>Lee</td>
+          <td>5</td>
+        </tr>
+      </tbody>
+    </table>
+    <button onclick="onSort()" id="sort">sort</button>
+    <script>
+      // 새로운 div를 만들어서 삽입
+      const first = document.querySelector('div');
+      const second = document.createElement('div');
+      second.innerHTML = '두번째';
+      first.after(second);
+
+      // 요소의 모든 하위 요소들을 삭제하는 `clear(elem)` 함수 만들기
+      const clear = (elem) => {
+        elem.innerHTML = null;
+      };
+      const ol = document.querySelector('ol#elem');
+      clear(ol);
+
+      // 리스트 입력받아 생성하기
+      const ul = document.querySelector('ul');
+      while (true) {
+        const content = prompt('내용을 입력하세요.');
+        if (!content) break;
+        const li = document.createElement('li');
+        li.innerText = content;
+        ul.append(li);
+      }
+
+      // 객체로부터 트리 생성하기
+      const data = {
+        Fish: {
+          trout: {},
+          salmon: {},
+        },
+        Tree: {
+          Huge: {
+            sequoia: {},
+            oak: {},
+          },
+          Flowering: {
+            'apple tree': {},
+            magnolia: {},
+          },
+        },
+      };
+      const treeContainer = document.querySelector('#tree-container');
+      const createTree = (container, data) => {
+        const keys = Object.keys(data);
+        const ul = document.createElement('ul');
+        keys.forEach((key, idx) => {
+          const li = document.createElement('li');
+          li.textContent = key;
+          const childs = Object.values(data)[idx];
+          createTree(li, childs);
+          ul.append(li);
+        });
+        container.append(ul);
+      };
+      createTree(treeContainer, data);
+
+      // 트리의 자손 수 나타내기
+      const animals = document.querySelector('ul#animals');
+      const nodes = animals.querySelectorAll('li');
+      nodes.forEach((node) => {
+        const counts = node.querySelectorAll('li').length;
+        if (counts < 1) return;
+        node.firstChild.data += `[${counts}]`;
+      });
+
+      // 달력 만들기
+      const createCalender = (container, year, month) => {
+        // `Date`에서 month는 0부터 센다.
+        const mon = month - 1;
+        const dateTime = new Date(year, mon);
+
+        // 테이블, 헤더 만들기
+        let table = '';
+        const header =
+          '<tr><th>MO</th><th>TU</th><th>WE</th><th>TH</th><th>FR</th><th>SA</th><th>SU</th></tr>';
+        table += header;
+
+        // 첫번째 주 빈칸 채워넣기
+        table += '<tr>';
+        if (dateTime.getDay() === 0) {
+          table += '<td></td>'.repeat(6);
+        } else {
+          table += '<td></td>'.repeat(dateTime.getDay() - 1);
+        }
+
+        // 일 채워넣기
+        while (true) {
+          if (dateTime.getMonth() !== mon) {
+            break;
+          }
+          const date = dateTime.getDate();
+          table += `<td>${date}</td>`;
+          // 일요일이라면 행이 바뀐다.
+          if (dateTime.getDay() === 0) {
+            table += '</tr><tr>';
+          }
+          dateTime.setDate(date + 1);
+        }
+
+        // 마지막 주 빈칸 채워넣기
+        if (dateTime.getDay() === 0) {
+          table += '<td></td>';
+        } else if (dateTime.getDay() !== 1) {
+          table += '<td></td>'.repeat(8 - dateTime.getDay());
+        }
+
+        // 컨테이너에 넣기
+        container.innerHTML = table;
+      };
+      const calenderTable = document.querySelector('table#calender');
+      createCalender(calenderTable, 2021, 1);
+
+      // 시계 만들기
+      const getNow = () => {
+        const dateTime = new Date();
+        const hour = document.querySelector('#hour');
+        const minute = document.querySelector('#minute');
+        const second = document.querySelector('#second');
+        hour.textContent =
+          dateTime.getHours() < 10
+            ? '0' + dateTime.getHours()
+            : dateTime.getHours();
+        minute.textContent =
+          dateTime.getMinutes() < 10
+            ? '0' + dateTime.getMinutes()
+            : dateTime.getMinutes();
+        second.textContent =
+          dateTime.getSeconds() < 10
+            ? '0' + dateTime.getSeconds()
+            : dateTime.getSeconds();
+      };
+
+      let timer;
+
+      const clockStart = () => {
+        getNow();
+        timer = setInterval(getNow, 1000);
+      };
+
+      clockStart();
+
+      const clockStop = () => {
+        clearInterval(timer);
+        timer = null;
+      };
+
+      // 리스트에 HTML 삽입하기
+      const liOne = document.querySelector('#one');
+      const innerTwo = document.createElement('li');
+      const innerThree = innerTwo.cloneNode(false);
+      innerTwo.textContent = 2;
+      innerThree.textContent = 3;
+      liOne.after(innerThree);
+      liOne.after(innerTwo);
+      // 아래의 방법으로 더 쉽게 할 수 있다.
+      // liOne.insertAdjacentHTML('afterend', '<li>2</li><li>3</li>');
+
+      // 표 정렬하기
+      const onSort = () => {
+        const sortTable = document.querySelector('#sort');
+        const tbody = sortTable.lastElementChild;
+        const rows = tbody.rows;
+        const sortedRows = [...rows].sort((rowA, rowB) =>
+          rowA.cells[0].innerHTML.localeCompare(rowB.cells[0].innerHTML),
+        );
+        tbody.append(...sortedRows);
+      };
+    </script>
+  </body>
+</html>
